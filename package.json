@@ -1,0 +1,50 @@
+{
+  "name": "@dpp-gs/schemas",
+  "version": "0.1.0",
+  "description": "Open JSON Schemas + CLI validator for EU Digital Product Passport (ESPR 2024/1781, Battery Reg 2023/1542, REACH SVHC)",
+  "type": "module",
+  "main": "src/index.mjs",
+  "bin": {
+    "dpp-validate": "src/cli.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs",
+    "./schemas/*": "./schemas/*"
+  },
+  "files": [
+    "src/",
+    "schemas/",
+    "examples/",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test src/*.test.mjs"
+  },
+  "keywords": [
+    "dpp",
+    "digital-product-passport",
+    "espr",
+    "battery-passport",
+    "reach",
+    "svhc",
+    "gs1",
+    "json-schema",
+    "validation",
+    "eu"
+  ],
+  "author": "Smart DRS Limited <contact@dpp.gs>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dpp-admin/schemas"
+  },
+  "homepage": "https://dpp.gs",
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

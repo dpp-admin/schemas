@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/battery.schema.json",
+  "title": "DPP Battery Data",
+  "description": "EU Battery Regulation 2023/1542 — Annex XIII Battery Passport, Annex IV performance & durability.",
+  "type": "object",
+  "properties": {
+    "chemistry":              { "type": ["string", "null"], "maxLength": 80, "description": "e.g. NMC 811, LFP, NCA, LCO, NiMH, Pb-acid." },
+    "capacity_kwh":           { "type": ["number", "null"], "minimum": 0 },
+    "capacity_mah":           { "type": ["number", "null"], "minimum": 0 },
+    "nominal_voltage":        { "type": ["number", "null"], "minimum": 0, "description": "Volts." },
+    "max_voltage":            { "type": ["number", "null"], "minimum": 0 },
+    "cycle_life":             { "type": ["integer", "null"], "minimum": 0 },
+    "expected_lifetime_years": { "type": ["integer", "null"], "minimum": 0 },
+    "state_of_health_pct":    { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "operating_temp_min":     { "type": ["integer", "null"], "description": "°C." },
+    "operating_temp_max":     { "type": ["integer", "null"] },
+    "storage_temp_min":       { "type": ["integer", "null"] },
+    "storage_temp_max":       { "type": ["integer", "null"] },
+    "cells_count":            { "type": ["integer", "null"], "minimum": 0 },
+    "cell_chemistry":         { "type": ["string", "null"], "maxLength": 80 },
+    "cathode_material":       { "type": ["string", "null"], "maxLength": 80 },
+    "anode_material":         { "type": ["string", "null"], "maxLength": 80 },
+    "electrolyte_type":       { "type": ["string", "null"], "maxLength": 80 },
+
+    "lithium_content_kg":   { "type": ["number", "null"], "minimum": 0 },
+    "cobalt_content_kg":    { "type": ["number", "null"], "minimum": 0 },
+    "nickel_content_kg":    { "type": ["number", "null"], "minimum": 0 },
+    "manganese_content_kg": { "type": ["number", "null"], "minimum": 0 },
+
+    "carbon_footprint_kg_kwh": { "type": ["number", "null"], "minimum": 0, "description": "kg CO2-eq per kWh of energy delivered over service life (Battery Reg. Annex II). EV threshold 100 kg CO2/kWh (2025), 75 (2027), 65 (2030)." },
+    "supply_chain_due_diligence_url": { "type": ["string", "null"], "format": "uri" },
+
+    "recycled_cobalt_pct":  { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Annex XIII recycled content target (cobalt): ≥16% by 2031, ≥26% by 2036." },
+    "recycled_lithium_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "≥6% by 2031, ≥12% by 2036." },
+    "recycled_nickel_pct":  { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "≥6% by 2031, ≥15% by 2036." },
+    "recycled_lead_pct":    { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "≥85% maintained." },
+
+    "extinguishing_agent": { "type": ["string", "null"], "maxLength": 200 },
+    "un_number":           { "type": ["string", "null"], "pattern": "^UN\\d{4}$", "description": "UN hazmat number (transport)." },
+    "hazmat_class":        { "type": ["string", "null"], "maxLength": 20 },
+
+    "round_trip_efficiency_pct":        { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Annex IV performance & durability." },
+    "round_trip_efficiency_50pct_life": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "internal_resistance_mohm":         { "type": ["number", "null"], "minimum": 0 },
+    "self_discharge_rate_pct_month":    { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "capacity_retention_pct_after_cycles": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "capacity_threshold_exhaustion_pct":   { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "warranty_calendar_years":          { "type": ["integer", "null"], "minimum": 0 },
+    "c_rate_reference":                 { "type": ["number", "null"], "minimum": 0 },
+    "battery_weight_kg":                { "type": ["number", "null"], "minimum": 0 }
+  }
+}

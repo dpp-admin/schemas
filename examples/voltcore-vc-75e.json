@@ -1,0 +1,44 @@
+{
+  "gtin": "08523456790018",
+  "batch_lot": "LOT2026A",
+  "product_name": { "en": "VoltCore VC-75E EV Battery Pack 75kWh" },
+  "brand_name": "VoltCore",
+  "model_number": "VC-75E",
+  "sector": "battery",
+  "manufacturer_name": "VoltCore GmbH",
+  "manufacturer_country": "DE",
+  "weight_kg": 380,
+  "battery_category": "ev",
+  "ce_marking": true,
+  "carbon_footprint_class": "B",
+  "carbon_footprint_total_kg": 4250,
+  "battery_removable_by_user": false,
+  "battery_removable_by_professional": true,
+  "removal_tools_required": "Specialised lift + torque wrench",
+  "replacement_battery_available_years": 10,
+  "materials": [
+    { "name": "Lithium",    "is_critical": true,  "origin_country": "AU", "percentage": 1.4, "cas_number": "7439-93-2" },
+    { "name": "Cobalt",     "is_critical": true,  "origin_country": "CD", "percentage": 6.2, "cas_number": "7440-48-4", "is_recycled": true, "recycled_pct": 18 },
+    { "name": "Nickel",     "is_critical": true,  "origin_country": "ID", "percentage": 28.5, "cas_number": "7440-02-0" },
+    { "name": "Aluminum",   "is_critical": false, "percentage": 21,   "is_recycled": true, "recycled_pct": 75 },
+    { "name": "Steel",      "is_critical": false, "percentage": 15,   "is_recycled": true, "recycled_pct": 95 }
+  ],
+  "substances": [
+    { "name": "Cobalt(II) sulfate", "cas_number": "10124-43-3", "concentration_pct": 0.3, "svhc": true, "reason_for_concern": "Reproductive toxicant (Cat 1B)" }
+  ],
+  "battery": {
+    "chemistry": "NMC 811",
+    "capacity_kwh": 75,
+    "nominal_voltage": 396,
+    "cycle_life": 1500,
+    "operating_temp_min": -30,
+    "operating_temp_max": 60,
+    "carbon_footprint_kg_kwh": 56,
+    "recycled_cobalt_pct": 18,
+    "recycled_lithium_pct": 8,
+    "recycled_nickel_pct": 9,
+    "un_number": "UN3480",
+    "hazmat_class": "9",
+    "extinguishing_agent": "F-500 EA or copious water"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/substances.schema.json",
+  "title": "DPP Substance of Concern",
+  "description": "REACH 1907/2006 Art. 33 — SVHC disclosure. ESPR Art. 7(5)(b).",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name":              { "type": "string", "maxLength": 200 },
+    "cas_number":        { "type": ["string", "null"], "pattern": "^\\d{2,7}-\\d{2}-\\d$" },
+    "ec_number":         { "type": ["string", "null"], "pattern": "^\\d{3}-\\d{3}-\\d$", "description": "European Chemicals Agency EC number." },
+    "concentration_ppm": { "type": ["number", "null"], "minimum": 0 },
+    "concentration_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "% w/w (by weight) per article. SVHC threshold: 0.1% w/w (1000 ppm)." },
+    "location_in_product": { "type": ["string", "null"], "maxLength": 200 },
+    "svhc":              { "type": ["boolean", "null"], "description": "On the ECHA SVHC Candidate List at time of last update." },
+    "reason_for_concern": { "type": ["string", "null"], "maxLength": 500 },
+    "safe_handling_url": { "type": ["string", "null"], "format": "uri" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "svhc": { "const": true } } },
+      "then": {
+        "anyOf": [
+          { "properties": { "concentration_ppm": { "minimum": 0 } }, "required": ["concentration_ppm"] },
+          { "properties": { "concentration_pct": { "minimum": 0 } }, "required": ["concentration_pct"] }
+        ],
+        "errorMessage": "SVHC substances must declare a concentration (REACH Art. 33). Threshold is 0.1% w/w / 1000 ppm."
+      }
+    }
+  ]
+}

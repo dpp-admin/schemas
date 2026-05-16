@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/product.schema.json",
+  "title": "DPP Product",
+  "description": "EU Digital Product Passport core record. Maps to /api/v1/products on dpp.gs.",
+  "type": "object",
+  "required": ["gtin"],
+  "properties": {
+    "gtin": {
+      "type": "string",
+      "pattern": "^\\d{8}|\\d{12,14}$",
+      "description": "GS1 Global Trade Item Number. EAN-8 (8), UPC-A (12), EAN-13 (13) or GTIN-14. Must have a valid GS1 check digit. ESPR Art. 7(2)(a) and Annex I."
+    },
+    "batch_lot": {
+      "type": ["string", "null"],
+      "maxLength": 20,
+      "description": "GS1 AI 10 batch/lot identifier. Used for production-batch level DPPs."
+    },
+    "serial_number": {
+      "type": ["string", "null"],
+      "maxLength": 20,
+      "description": "GS1 AI 21 serial number for unit-level DPPs (mandatory for EV/industrial batteries per Battery Reg. Annex XIII)."
+    },
+    "product_name": {
+      "type": ["object", "null"],
+      "description": "Multilingual product name. Keys are ISO 639-1 codes (en, sk, de, …). EN is recommended as fallback.",
+      "additionalProperties": { "type": "string", "maxLength": 200 }
+    },
+    "brand_name":   { "type": ["string", "null"], "maxLength": 100 },
+    "model_number": { "type": ["string", "null"], "maxLength": 80 },
+    "sector": {
+      "type": ["string", "null"],
+      "enum": ["general", "battery", "textile", "electronics", "furniture", "construction", "appliance", "cosmetics", "food", "toy", "chemical", null],
+      "description": "Coarse product sector. Drives which delegated act applies."
+    },
+    "product_category": { "type": ["string", "null"], "maxLength": 120 },
+    "hs_code": {
+      "type": ["string", "null"],
+      "pattern": "^\\d{6,10}$",
+      "description": "Harmonized System tariff code (WCO). Required for cross-border traceability."
+    },
+    "manufacturer_name":     { "type": ["string", "null"], "maxLength": 200, "description": "Legal name of the manufacturer. ESPR Art. 7(2)(a)." },
+    "manufacturer_country":  { "type": ["string", "null"], "pattern": "^[A-Z]{2}$", "description": "ISO 3166-1 alpha-2." },
+    "manufacturer_address":  { "type": ["string", "null"], "maxLength": 500 },
+    "manufacturer_contact":  { "type": ["string", "null"], "maxLength": 200, "description": "Compliance contact email or phone." },
+    "importer_name":         { "type": ["string", "null"], "maxLength": 200, "description": "EU importer / authorised representative when manufacturer is non-EU. Reg. 2019/1020 Art. 4." },
+    "importer_country":      { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+    "importer_address":      { "type": ["string", "null"], "maxLength": 500 },
+
+    "weight_kg":  { "type": ["number", "null"], "minimum": 0, "description": "Total weight in kg. Mandatory for EPR fee calculation (WEEE, Batteries, Packaging)." },
+    "width_mm":   { "type": ["number", "null"], "minimum": 0 },
+    "height_mm":  { "type": ["number", "null"], "minimum": 0 },
+    "depth_mm":   { "type": ["number", "null"], "minimum": 0 },
+    "manufacture_date":         { "type": ["string", "null"], "format": "date" },
+    "expiry_date":              { "type": ["string", "null"], "format": "date" },
+    "market_introduction_date": { "type": ["string", "null"], "format": "date" },
+
+    "ce_marking":      { "type": ["boolean", "null"], "description": "CE mark applied. Required for most product categories on the EU market." },
+    "reach_compliant": { "type": ["boolean", "null"] },
+    "rohs_compliant":  { "type": ["boolean", "null"] },
+    "energy_efficiency_class": { "type": ["string", "null"], "enum": ["A","B","C","D","E","F","G", null] },
+    "energy_consumption_kwh":  { "type": ["number", "null"], "minimum": 0 },
+    "ip_rating":               { "type": ["string", "null"], "pattern": "^IP\\d[0-9X]$" },
+
+    "carbon_footprint_manufacturing_kg": { "type": ["number", "null"], "minimum": 0, "description": "kg CO2-eq attributed to manufacturing phase." },
+    "carbon_footprint_transport_kg":     { "type": ["number", "null"], "minimum": 0 },
+    "carbon_footprint_use_kg":           { "type": ["number", "null"], "minimum": 0 },
+    "carbon_footprint_end_of_life_kg":   { "type": ["number", "null"], "minimum": 0 },
+    "carbon_footprint_total_kg":         { "type": ["number", "null"], "minimum": 0 },
+    "carbon_footprint_methodology":      { "type": ["string", "null"], "maxLength": 200 },
+    "carbon_footprint_declaration_url":  { "type": ["string", "null"], "format": "uri" },
+    "carbon_footprint_class": {
+      "type": ["string", "null"],
+      "enum": ["A","B","C","D","E","F","G", null],
+      "description": "Battery Reg. Art. 7 carbon-footprint class. Mandatory for EV batteries from 18 Aug 2026."
+    },
+
+    "recycled_content":           { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Total recycled content as % by weight (w/w) of the finished product." },
+    "pre_consumer_recycled_pct":  { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "post_consumer_recycled_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "renewable_content_pct":      { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "recyclability_pct":          { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Share of product mass (% by weight) recoverable per EN 45555." },
+
+    "repairability_score":            { "type": ["number", "null"], "minimum": 0, "maximum": 10, "description": "EU repairability index 0-10. Right to Repair Directive 2024/1799." },
+    "spare_parts_availability_years": { "type": ["integer", "null"], "minimum": 0 },
+    "disassembly_time_minutes":       { "type": ["integer", "null"], "minimum": 0 },
+    "repair_manual_url":              { "type": ["string", "null"], "format": "uri" },
+    "repair_network_url":             { "type": ["string", "null"], "format": "uri" },
+    "spare_parts_url":                { "type": ["string", "null"], "format": "uri" },
+
+    "waste_framework_directive_code": { "type": ["string", "null"], "pattern": "^\\d{2} \\d{2} \\d{2}\\*?$", "description": "EU EWC waste code (Waste Framework Directive 2008/98/EC)." },
+    "deposit_return_scheme":          { "type": ["boolean", "null"] },
+    "recycling_instructions":         { "type": ["string", "null"], "maxLength": 4000 },
+    "disassembly_instructions_url":   { "type": ["string", "null"], "format": "uri" },
+
+    "declaration_of_conformity":   { "type": ["string", "null"], "description": "URL or full DoC text. ESPR Art. 7(2)(d)." },
+    "technical_documentation_url": { "type": ["string", "null"], "format": "uri" },
+    "test_reports_url":            { "type": ["string", "null"], "format": "uri" },
+    "third_party_certification":   { "type": ["string", "null"], "maxLength": 500 },
+    "user_manual_url":             { "type": ["string", "null"], "format": "uri" },
+    "safety_instructions_url":     { "type": ["string", "null"], "format": "uri" },
+    "product_datasheet_url":       { "type": ["string", "null"], "format": "uri" },
+    "energy_label_url":            { "type": ["string", "null"], "format": "uri" },
+    "product_image_url":           { "type": ["string", "null"], "format": "uri" },
+
+    "expected_lifetime_years": { "type": ["integer", "null"], "minimum": 0 },
+    "warranty_years":          { "type": ["integer", "null"], "minimum": 0 },
+    "age_restriction":         { "type": ["integer", "null"], "minimum": 0, "maximum": 21 },
+
+    "battery_category": {
+      "type": ["string", "null"],
+      "enum": ["portable", "portable_general_use", "lmt", "sli", "industrial", "ev", null],
+      "description": "Battery Reg. Art. 3 category. Mandatory if sector == 'battery'."
+    },
+    "place_of_manufacture_city":   { "type": ["string", "null"], "maxLength": 120 },
+    "place_of_manufacture_region": { "type": ["string", "null"], "maxLength": 120 },
+    "manufacturing_facility_id":   { "type": ["string", "null"], "maxLength": 80 },
+
+    "battery_removable_by_user":         { "type": ["boolean", "null"], "description": "Battery Reg. Art. 11. Mandatory from 18 Feb 2027." },
+    "battery_removable_by_professional": { "type": ["boolean", "null"] },
+    "removal_tools_required":            { "type": ["string", "null"], "maxLength": 200 },
+    "removal_instructions_url":          { "type": ["string", "null"], "format": "uri" },
+    "replacement_battery_available_years": { "type": ["integer", "null"], "minimum": 0 },
+    "removability_exemption_reason":     { "type": ["string", "null"], "maxLength": 500 },
+
+    "materials":   { "type": "array", "items": { "$ref": "materials.schema.json" } },
+    "substances":  { "type": "array", "items": { "$ref": "substances.schema.json" } },
+    "battery":     { "$ref": "battery.schema.json" },
+    "disassembly_steps": { "type": "array", "items": { "$ref": "battery-disassembly.schema.json" } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "sector": { "const": "battery" } } },
+      "then": {
+        "required": ["battery_category"],
+        "errorMessage": "battery_category is mandatory when sector='battery' (Battery Reg. Art. 3)"
+      }
+    },
+    {
+      "if": { "properties": { "battery_category": { "enum": ["ev", "industrial"] } } },
+      "then": {
+        "required": ["weight_kg"],
+        "errorMessage": "weight_kg is mandatory for EV and industrial batteries (Battery Reg. Annex XIII)"
+      }
+    }
+  ]
+}

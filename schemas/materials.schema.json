@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/materials.schema.json",
+  "title": "DPP Product Material",
+  "description": "Per-material composition row. ESPR Art. 7(5), CRMA 2024/1252.",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name":             { "type": "string", "maxLength": 120 },
+    "category":         { "type": ["string", "null"], "maxLength": 120 },
+    "percentage":       { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "% by weight (w/w) of the finished product." },
+    "weight_kg":        { "type": ["number", "null"], "minimum": 0 },
+    "origin_country":   { "type": ["string", "null"], "pattern": "^[A-Z]{2}$", "description": "ISO 3166-1 alpha-2. Mandatory for Critical Raw Materials under CRMA." },
+    "is_critical":      { "type": ["boolean", "null"], "description": "Listed as Critical Raw Material (CRMA Annex II)." },
+    "is_recycled":      { "type": ["boolean", "null"] },
+    "recycled_pct":     { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Share of this material that is post- or pre-consumer recycled, by weight." },
+    "cas_number":       { "type": ["string", "null"], "pattern": "^\\d{2,7}-\\d{2}-\\d$", "description": "CAS Registry Number (e.g. 7440-43-9)." }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "is_critical": { "const": true } } },
+      "then": {
+        "required": ["origin_country"],
+        "errorMessage": "Critical Raw Materials must declare origin_country (CRMA 2024/1252 Art. 23)"
+      }
+    }
+  ]
+}

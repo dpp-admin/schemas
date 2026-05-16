@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/battery-disassembly.schema.json",
+  "title": "Battery Disassembly Step",
+  "description": "EU Battery Regulation 2023/1542 Annex XIII point 2 — step-by-step disassembly for repair and recycling.",
+  "type": "object",
+  "required": ["step_order", "step_title"],
+  "properties": {
+    "step_order":        { "type": "integer", "minimum": 1 },
+    "step_title":        { "type": "string", "maxLength": 200 },
+    "step_description":  { "type": ["string", "null"], "maxLength": 4000 },
+    "tools_required":    { "type": ["string", "null"], "maxLength": 200, "description": "e.g. PH2 Phillips screwdriver, T20 Torx." },
+    "fastener_type":     { "type": ["string", "null"], "maxLength": 80, "description": "screw / clip / weld / adhesive / etc." },
+    "fastener_count":    { "type": ["integer", "null"], "minimum": 0 },
+    "warning":           { "type": ["string", "null"], "maxLength": 1000, "description": "Electrical, chemical, fire hazard warnings." },
+    "image_url":         { "type": ["string", "null"], "format": "uri" },
+    "estimated_time_seconds": { "type": ["integer", "null"], "minimum": 0 }
+  }
+}
