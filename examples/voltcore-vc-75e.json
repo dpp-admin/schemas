@@ -1,7 +1,9 @@
 {
   "gtin": "08523456790018",
   "batch_lot": "LOT2026A",
-  "product_name": { "en": "VoltCore VC-75E EV Battery Pack 75kWh" },
+  "product_name": {
+    "en": "VoltCore VC-75E EV Battery Pack 75kWh"
+  },
   "brand_name": "VoltCore",
   "model_number": "VC-75E",
   "sector": "battery",
@@ -17,14 +19,52 @@
   "removal_tools_required": "Specialised lift + torque wrench",
   "replacement_battery_available_years": 10,
   "materials": [
-    { "name": "Lithium",    "is_critical": true,  "origin_country": "AU", "percentage": 1.4, "cas_number": "7439-93-2" },
-    { "name": "Cobalt",     "is_critical": true,  "origin_country": "CD", "percentage": 6.2, "cas_number": "7440-48-4", "is_recycled": true, "recycled_pct": 18 },
-    { "name": "Nickel",     "is_critical": true,  "origin_country": "ID", "percentage": 28.5, "cas_number": "7440-02-0" },
-    { "name": "Aluminum",   "is_critical": false, "percentage": 21,   "is_recycled": true, "recycled_pct": 75 },
-    { "name": "Steel",      "is_critical": false, "percentage": 15,   "is_recycled": true, "recycled_pct": 95 }
+    {
+      "name": "Lithium",
+      "is_critical": true,
+      "origin_country": "AU",
+      "percentage": 1.4,
+      "cas_number": "7439-93-2"
+    },
+    {
+      "name": "Cobalt",
+      "is_critical": true,
+      "origin_country": "CD",
+      "percentage": 6.2,
+      "cas_number": "7440-48-4",
+      "is_recycled": true,
+      "recycled_pct": 18
+    },
+    {
+      "name": "Nickel",
+      "is_critical": true,
+      "origin_country": "ID",
+      "percentage": 28.5,
+      "cas_number": "7440-02-0"
+    },
+    {
+      "name": "Aluminum",
+      "is_critical": false,
+      "percentage": 21,
+      "is_recycled": true,
+      "recycled_pct": 75
+    },
+    {
+      "name": "Steel",
+      "is_critical": false,
+      "percentage": 15,
+      "is_recycled": true,
+      "recycled_pct": 95
+    }
   ],
   "substances": [
-    { "name": "Cobalt(II) sulfate", "cas_number": "10124-43-3", "concentration_pct": 0.3, "svhc": true, "reason_for_concern": "Reproductive toxicant (Cat 1B)" }
+    {
+      "name": "Cobalt(II) sulfate",
+      "cas_number": "10124-43-3",
+      "concentration_pct": 0.3,
+      "svhc": true,
+      "reason_for_concern": "Reproductive toxicant (Cat 1B)"
+    }
   ],
   "battery": {
     "chemistry": "NMC 811",
@@ -39,6 +79,50 @@
     "recycled_nickel_pct": 9,
     "un_number": "UN3480",
     "hazmat_class": "9",
-    "extinguishing_agent": "F-500 EA or copious water"
+    "extinguishing_agent": "F-500 EA or copious water",
+    "rated_capacity_ah": 188.0,
+    "rated_minimum_capacity_ah": 180.0,
+    "usable_capacity_pct": 95.0,
+    "power_rating_w": 220000,
+    "peak_power_rating_w": 350000,
+    "initial_thermal_runaway_temp_c": 165,
+    "cycle_life_test_method": "IEC 61960-3",
+    "cycle_life_test_conditions": "1C charge / 1C discharge @ 25°C, DOD 80%, 1500 cycles to 80% SoH",
+    "cathode_active_material_composition": {
+      "Ni": 0.8,
+      "Mn": 0.1,
+      "Co": 0.1
+    },
+    "anode_active_material_composition": {
+      "graphite": 0.9,
+      "silicon": 0.1
+    },
+    "separator_type": "Ceramic-coated polyethylene, 20 µm",
+    "current_collector_anode_material": "Copper foil, 8 µm",
+    "current_collector_cathode_material": "Aluminium foil, 12 µm",
+    "binder_material": "PVDF (cathode) / CMC+SBR (anode)",
+    "electrolyte_solvent": "EC/DMC/DEC (1:1:1 v/v)",
+    "electrolyte_salt": "LiPF6 1.0 mol/L",
+    "crm_present_pct_by_weight": 18.5,
+    "crm_recoverable_pct_by_weight": 95.0,
+    "cf_cradle_to_gate_kg_per_kwh": 56.0,
+    "cf_distribution_kg_per_kwh": 3.2,
+    "cf_use_stage_kg_per_kwh": 12.0,
+    "cf_end_of_life_kg_per_kwh": -4.5,
+    "cf_verification_url": "https://files.dpp.gs/voltcore/cf-audit-2026.pdf",
+    "cf_verified_by": "TÜV Süd Battery Testing GmbH",
+    "cf_verified_date": "2026-03-15",
+    "recycled_content_verification_url": "https://files.dpp.gs/voltcore/recycled-audit-2026.pdf",
+    "recycled_content_verified_by": "Bureau Veritas",
+    "recycled_content_verified_date": "2026-03-20",
+    "soh_threshold_second_life_pct": 80.0,
+    "collection_pickup_url": "https://recycle.voltcore.eu/pickup",
+    "recycling_information_url": "https://voltcore.eu/recycling",
+    "remanufacturing_repurposing_url": "https://voltcore.eu/second-life",
+    "safety_data_sheet_url": "https://files.voltcore.eu/sds/vc-75e.pdf",
+    "thermal_runaway_propagation_test_passed": true,
+    "fire_response_class": "Class D — Li-ion NMC",
+    "gases_on_thermal_runaway": "HF, CO, CO2, POF3, hydrocarbons (CH4, C2H4)",
+    "suppression_agents_recommended": "Class D dry powder, water mist with foam additive; AVOID direct water jet"
   }
 }

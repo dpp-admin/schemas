@@ -48,6 +48,58 @@
     "capacity_threshold_exhaustion_pct":   { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
     "warranty_calendar_years":          { "type": ["integer", "null"], "minimum": 0 },
     "c_rate_reference":                 { "type": ["number", "null"], "minimum": 0 },
-    "battery_weight_kg":                { "type": ["number", "null"], "minimum": 0 }
+    "battery_weight_kg":                { "type": ["number", "null"], "minimum": 0 },
+
+    "rated_capacity_ah":          { "type": ["number", "null"], "minimum": 0, "description": "Annex XIII §1 — rated capacity in ampere-hours. Mandatory alongside kWh for EV/industrial batteries." },
+    "rated_minimum_capacity_ah":  { "type": ["number", "null"], "minimum": 0 },
+    "usable_capacity_pct":        { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Usable capacity as % of rated_capacity_ah." },
+    "power_rating_w":             { "type": ["number", "null"], "minimum": 0, "description": "Continuous rated power in watts (Annex XIII §1)." },
+    "peak_power_rating_w":        { "type": ["number", "null"], "minimum": 0 },
+    "initial_thermal_runaway_temp_c": { "type": ["integer", "null"], "description": "Temperature in °C at which thermal runaway is initiated under standard test conditions (Annex XIII §7 safety)." },
+    "cycle_life_test_method":     { "type": ["string", "null"], "maxLength": 80, "description": "e.g. IEC 61960-3, ISO 12405-4." },
+    "cycle_life_test_conditions": { "type": ["string", "null"], "description": "Free-text description of cycling C-rate, depth of discharge, temperature." },
+
+    "cathode_active_material_composition": {
+      "type": ["object", "null"],
+      "description": "Annex XIII §2(a)(ii) — cathode chemistry breakdown by mass fraction (0..1). Example for NMC 811: {\"Ni\":0.80, \"Mn\":0.10, \"Co\":0.10}.",
+      "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+    },
+    "anode_active_material_composition": {
+      "type": ["object", "null"],
+      "description": "Anode chemistry breakdown by mass fraction. Example silicon-enhanced graphite: {\"graphite\":0.90, \"silicon\":0.10}.",
+      "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+    },
+    "separator_type":              { "type": ["string", "null"], "maxLength": 120, "description": "Polypropylene, ceramic-coated PE, etc." },
+    "current_collector_anode_material":   { "type": ["string", "null"], "maxLength": 80, "description": "Typically copper." },
+    "current_collector_cathode_material": { "type": ["string", "null"], "maxLength": 80, "description": "Typically aluminium." },
+    "binder_material":             { "type": ["string", "null"], "maxLength": 120, "description": "PVDF, CMC/SBR, etc." },
+    "electrolyte_solvent":         { "type": ["string", "null"], "maxLength": 120, "description": "EC/DMC/DEC mixture, etc." },
+    "electrolyte_salt":            { "type": ["string", "null"], "maxLength": 120, "description": "LiPF6, LiFSI, etc." },
+
+    "crm_present_pct_by_weight":     { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Critical Raw Materials (CRM Act 2024/1252) total mass percentage of the battery." },
+    "crm_recoverable_pct_by_weight": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+
+    "cf_cradle_to_gate_kg_per_kwh":  { "type": ["number", "null"], "minimum": 0, "description": "Annex XIII §7 — carbon footprint of the cradle-to-gate life cycle stage, kg CO2-eq per kWh delivered." },
+    "cf_distribution_kg_per_kwh":    { "type": ["number", "null"], "minimum": 0 },
+    "cf_use_stage_kg_per_kwh":       { "type": ["number", "null"], "minimum": 0 },
+    "cf_end_of_life_kg_per_kwh":     { "type": ["number", "null"], "minimum": 0 },
+    "cf_verification_url":           { "type": ["string", "null"], "format": "uri", "description": "Link to PEF methodology audit report." },
+    "cf_verified_by":                { "type": ["string", "null"], "maxLength": 200, "description": "Notified body / third-party auditor name." },
+    "cf_verified_date":              { "type": ["string", "null"], "format": "date" },
+
+    "recycled_content_verification_url": { "type": ["string", "null"], "format": "uri", "description": "Annex XIII §3 — third-party audit of recycled content claims." },
+    "recycled_content_verified_by":      { "type": ["string", "null"], "maxLength": 200 },
+    "recycled_content_verified_date":    { "type": ["string", "null"], "format": "date" },
+
+    "soh_threshold_second_life_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "State-of-Health threshold (e.g. 70-80%) below which manufacturer recommends second-life repurposing instead of recycling. Annex XIII §6." },
+    "collection_pickup_url":         { "type": ["string", "null"], "format": "uri", "description": "Where the consumer/operator can drop off the end-of-life battery." },
+    "recycling_information_url":     { "type": ["string", "null"], "format": "uri" },
+    "remanufacturing_repurposing_url": { "type": ["string", "null"], "format": "uri" },
+
+    "safety_data_sheet_url":         { "type": ["string", "null"], "format": "uri", "description": "REACH Annex II Safety Data Sheet." },
+    "thermal_runaway_propagation_test_passed": { "type": ["boolean", "null"], "description": "Annex XIII §7 — UNECE R100-03 Annex 9 or IEC 62619 thermal-runaway propagation test result." },
+    "fire_response_class":           { "type": ["string", "null"], "maxLength": 20, "description": "e.g. 'Class D — Li-ion', per NFPA 855 or local fire code." },
+    "gases_on_thermal_runaway":      { "type": ["string", "null"], "description": "Toxic / flammable gases released during thermal runaway, e.g. 'HF, CO, HCl, POF3'." },
+    "suppression_agents_recommended": { "type": ["string", "null"], "description": "Fire-fighting media recommended for first responders." }
   }
 }
