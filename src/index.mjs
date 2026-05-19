@@ -13,11 +13,13 @@ function loadSchema(name) {
 }
 
 const schemas = {
-  product:               loadSchema('product.schema.json'),
-  materials:             loadSchema('materials.schema.json'),
-  substances:            loadSchema('substances.schema.json'),
-  battery:               loadSchema('battery.schema.json'),
-  'battery-disassembly': loadSchema('battery-disassembly.schema.json'),
+  product:                  loadSchema('product.schema.json'),
+  materials:                loadSchema('materials.schema.json'),
+  substances:               loadSchema('substances.schema.json'),
+  battery:                  loadSchema('battery.schema.json'),
+  'battery-disassembly':    loadSchema('battery-disassembly.schema.json'),
+  'battery-recycled-audit': loadSchema('battery-recycled-audit.schema.json'),
+  'battery-due-diligence':  loadSchema('battery-due-diligence.schema.json'),
 }
 
 const ajv = new Ajv({ allErrors: true, strict: false, $data: true })
@@ -35,10 +37,12 @@ function makeValidator(rootId) {
   }
 }
 
-export const validateProduct   = makeValidator('https://dpp.gs/schemas/v2026.05/product.schema.json')
-export const validateMaterial  = makeValidator('https://dpp.gs/schemas/v2026.05/materials.schema.json')
-export const validateSubstance = makeValidator('https://dpp.gs/schemas/v2026.05/substances.schema.json')
-export const validateBattery   = makeValidator('https://dpp.gs/schemas/v2026.05/battery.schema.json')
+export const validateProduct        = makeValidator('https://dpp.gs/schemas/v2026.05/product.schema.json')
+export const validateMaterial       = makeValidator('https://dpp.gs/schemas/v2026.05/materials.schema.json')
+export const validateSubstance      = makeValidator('https://dpp.gs/schemas/v2026.05/substances.schema.json')
+export const validateBattery        = makeValidator('https://dpp.gs/schemas/v2026.05/battery.schema.json')
+export const validateRecycledAudit  = makeValidator('https://dpp.gs/schemas/v2026.05/battery-recycled-audit.schema.json')
+export const validateDueDiligence   = makeValidator('https://dpp.gs/schemas/v2026.05/battery-due-diligence.schema.json')
 
 // GS1 check-digit validation for GTIN-8/12/13/14. Returned alongside
 // schema validation as a warning when GTIN is otherwise structurally valid

@@ -2,11 +2,17 @@
 // dpp-validate <file.json>
 // dpp-validate-csv <file.csv>
 import { readFileSync } from 'node:fs'
-import { validateProduct, gtinCheckDigit } from './index.mjs'
+import { validateProduct, validateRecycledAudit, validateDueDiligence, gtinCheckDigit } from './index.mjs'
 
 const args = process.argv.slice(2)
 if (args.length < 2 && args[0] !== '--help') {
-  console.error('Usage:\n  dpp-validate validate <product.json>\n  dpp-validate validate-csv <batch.csv>')
+  console.error([
+    'Usage:',
+    '  dpp-validate validate <product.json>',
+    '  dpp-validate validate-csv <batch.csv>',
+    '  dpp-validate validate-recycled-audit <audit.json>',
+    '  dpp-validate validate-due-diligence <due-diligence.json>',
+  ].join('\n'))
   process.exit(2)
 }
 
@@ -53,6 +59,20 @@ if (cmd === 'validate') {
   })
   console.log(`\n${okCount} valid, ${failCount} invalid out of ${rows.length} rows.`)
   process.exit(failCount === 0 ? 0 : 1)
+} else if (cmd === 'validate-recycled-audit' || cmd === 'validate-due-diligence') {
+  const fn = cmd === 'validate-recycled-audit' ? validateRecycledAudit : validateDueDiligence
+  const payload = JSON.parse(readFileSync(file, 'utf8'))
+  const r = fn(payload)
+  if (r.valid) {
+    console.log('✓ valid')
+    process.exit(0)
+  } else {
+    console.error('✗ validation failed')
+    for (const e of r.errors) {
+      console.error(`  ${e.instancePath || '(root)'} ${e.message}`)
+    }
+    process.exit(1)
+  }
 } else {
   console.error('Unknown command:', cmd)
   process.exit(2)

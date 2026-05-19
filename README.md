@@ -44,6 +44,8 @@ if (!result.valid) {
 ```bash
 npx @dpp-gs/schemas validate my-product.json
 npx @dpp-gs/schemas validate-csv my-batch.csv
+npx @dpp-gs/schemas validate-recycled-audit my-audit.json
+npx @dpp-gs/schemas validate-due-diligence my-dd.json
 ```
 
 `validate-csv` accepts the standard dpp.gs CSV template (columns documented in `schemas/product.schema.json`) and prints per-row diagnostics.
@@ -57,6 +59,8 @@ npx @dpp-gs/schemas validate-csv my-batch.csv
 | `substances.schema.json` | REACH 1907/2006 Art. 33 (SVHC) |
 | `battery.schema.json` | Battery Reg. 2023/1542 Annex XIII |
 | `battery-disassembly.schema.json` | Battery Reg. Annex XIII §2 |
+| `battery-recycled-audit.schema.json` | Battery Reg. Art. 8 + Annex XIII §3 |
+| `battery-due-diligence.schema.json` | Battery Reg. Chapter VII (Art. 47–53) |
 | `carbon-footprint.schema.json` | Battery Reg. Art. 7 + ESPR Art. 7(2)(b) |
 
 Each schema cites the exact regulation paragraph for every mandatory field. Look at `notes` annotations.

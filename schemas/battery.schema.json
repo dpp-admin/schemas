@@ -82,7 +82,7 @@
     "cf_cradle_to_gate_kg_per_kwh":  { "type": ["number", "null"], "minimum": 0, "description": "Annex XIII §7 — carbon footprint of the cradle-to-gate life cycle stage, kg CO2-eq per kWh delivered." },
     "cf_distribution_kg_per_kwh":    { "type": ["number", "null"], "minimum": 0 },
     "cf_use_stage_kg_per_kwh":       { "type": ["number", "null"], "minimum": 0 },
-    "cf_end_of_life_kg_per_kwh":     { "type": ["number", "null"], "minimum": 0 },
+    "cf_end_of_life_kg_per_kwh":     { "type": ["number", "null"], "description": "kg CO₂ eq / kWh. May be negative when recycling credits offset emissions (Annex II BatReg)." },
     "cf_verification_url":           { "type": ["string", "null"], "format": "uri", "description": "Link to PEF methodology audit report." },
     "cf_verified_by":                { "type": ["string", "null"], "maxLength": 200, "description": "Notified body / third-party auditor name." },
     "cf_verified_date":              { "type": ["string", "null"], "format": "date" },

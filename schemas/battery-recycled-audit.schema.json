@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/battery-recycled-audit.schema.json",
+  "title": "Battery Recycled-Content Audit",
+  "description": "EU Battery Regulation 2023/1542 · Art. 8 · Annex XIII §3 — per-substance third-party verification of recycled content claims. The producer's recycled-content percentage on the battery passport (e.g. 'cobalt 12 %') is only credible if backed by a third-party audit.",
+  "type": "object",
+  "properties": {
+    "substance": {
+      "type": "string",
+      "enum": ["cobalt", "lithium", "nickel", "lead", "graphite"],
+      "description": "Which substance does this audit cover. Only these five substances have mandatory recycled-content targets under Art. 8."
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["mine-to-refiner", "refiner-to-cell", "cell-to-pack", "full-chain"],
+      "default": "mine-to-refiner",
+      "description": "Audit scope — which segment of the supply chain the verifier covered."
+    },
+    "verifier_name": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Legal name of the third-party verifier. Required."
+    },
+    "verifier_accreditation": {
+      "type": ["string", "null"],
+      "maxLength": 200,
+      "description": "Verifier's accreditation reference, e.g. 'ISO 17025', 'ISO 17021', 'IRMA-75'."
+    },
+    "notified_body_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Optional FK to a notified-body record if the verifier is an EU notified body."
+    },
+    "recycled_pct": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Recycled-content percentage declared in this audit (% by weight, w/w)."
+    },
+    "issued_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the audit was issued (YYYY-MM-DD). Required."
+    },
+    "expires_date": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Optional expiry date of the audit."
+    },
+    "report_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Public URL of the audit report PDF."
+    },
+    "report_hash": {
+      "type": ["string", "null"],
+      "pattern": "^[A-Fa-f0-9]{64}$",
+      "description": "Optional SHA-256 hash of the audit PDF for tamper-evidence (64 hex chars)."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Free-text notes about the audit, exceptions or limitations."
+    }
+  },
+  "required": ["substance", "verifier_name", "issued_date"],
+  "additionalProperties": false
+}

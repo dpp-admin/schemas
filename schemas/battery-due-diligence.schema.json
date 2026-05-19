@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/battery-due-diligence.schema.json",
+  "title": "Battery Supply-Chain Due-Diligence Record",
+  "description": "EU Battery Regulation 2023/1542 · Chapter VII · Art. 47–53. Mandatory since 18 Aug 2025 for economic operators placing batteries on the EU market that contain cobalt, natural graphite, lithium or nickel above the Annex X thresholds. OECD-aligned management system, identified and mitigated risks, independent verification.",
+  "type": "object",
+  "properties": {
+    "substance": {
+      "type": "string",
+      "enum": ["cobalt", "natural_graphite", "lithium", "nickel"],
+      "description": "Which raw material the due-diligence record covers. Art. 47(1) — only these four substances are in scope."
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["mine-to-refiner", "refiner-to-cell", "cell-to-pack", "full-chain"],
+      "default": "mine-to-refiner",
+      "description": "Audit scope — which segment of the supply chain the verifier covered."
+    },
+    "oecd_compliant": {
+      "type": "boolean",
+      "default": false,
+      "description": "Compliance flag against the OECD Due Diligence Guidance for Responsible Supply Chains."
+    },
+    "verifier_name": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Legal name of the third-party verifier. Required."
+    },
+    "verifier_accreditation": {
+      "type": ["string", "null"],
+      "maxLength": 200,
+      "description": "Verifier's accreditation reference, e.g. 'ISO 17021', 'ISO 17025', 'RCS Global'."
+    },
+    "notified_body_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Optional FK to a notified-body record if the verifier is an EU notified body."
+    },
+    "policy_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Producer's due-diligence policy URL (Art. 49)."
+    },
+    "audit_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Third-party audit report URL (Art. 51)."
+    },
+    "risk_areas_assessed": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "string",
+        "enum": [
+          "child_labour", "forced_labour", "torture_cruel_treatment",
+          "sexual_violence", "worst_forms_of_child_labour", "gross_human_rights",
+          "war_crimes", "financing_armed_groups", "corruption", "money_laundering",
+          "tax_evasion", "environment", "oecd_chapter_vii"
+        ]
+      },
+      "description": "Annex X risk categories assessed by the management system."
+    },
+    "cahras_red_flags": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z]{2}$"
+      },
+      "description": "Conflict-Affected and High-Risk Areas the supply chain touches. ISO 3166-1 alpha-2 country codes (e.g. ['CD','CO','MM']). Empty array means no CAHRAS exposure declared."
+    },
+    "mitigation_measures": {
+      "type": ["string", "null"],
+      "description": "Free-text description of mitigation measures put in place (Art. 50). E.g. 'On-site audits, supplier training, traceability records'."
+    },
+    "grievance_mechanism_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "URL where affected stakeholders can lodge complaints."
+    },
+    "issued_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the due-diligence verification was issued (YYYY-MM-DD). Required."
+    },
+    "expires_date": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Optional expiry date of the verification."
+    },
+    "report_hash": {
+      "type": ["string", "null"],
+      "pattern": "^[A-Fa-f0-9]{64}$",
+      "description": "Optional SHA-256 hash of the audit PDF for tamper-evidence."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Free-text notes about the verification, exceptions or limitations."
+    }
+  },
+  "required": ["substance", "verifier_name", "issued_date"],
+  "additionalProperties": false
+}
