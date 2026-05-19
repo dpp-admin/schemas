@@ -3,7 +3,7 @@ import assert from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, gtinCheckDigit } from './index.mjs'
+import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, validateTyre, gtinCheckDigit } from './index.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const example = JSON.parse(readFileSync(join(__dirname, '..', 'examples', 'voltcore-vc-75e.json'), 'utf8'))
@@ -112,5 +112,45 @@ test('textile rejects share % over 100', () => {
 
 test('textile rejects unknown weave type', () => {
   const r = validateTextile({ weave_type: 'glued-together' })
+  assert.equal(r.valid, false)
+})
+
+test('tyre accepts a minimum valid EU Tyre Label payload', () => {
+  const r = validateTyre({
+    vehicle_class: 'C1',
+    fuel_efficiency_class: 'B',
+    wet_grip_class: 'A',
+    external_noise_db: 68,
+    external_noise_class: 'A',
+    snow_grip_3pmsf: false,
+    ev_optimised: true,
+    size_designation: '205/55 R16 91V',
+    eprel_database_id: 'EPREL/2024/T0123456',
+    rubber_blend_composition: [
+      { polymer: 'Natural rubber (NR)', pct: 40 },
+      { polymer: 'SBR', pct: 35 },
+      { polymer: 'BR', pct: 25 },
+    ],
+  })
+  assert.equal(r.valid, true, JSON.stringify(r.errors, null, 2))
+})
+
+test('tyre rejects fuel-efficiency class F (removed from 2021 label)', () => {
+  const r = validateTyre({ fuel_efficiency_class: 'F' })
+  assert.equal(r.valid, false)
+})
+
+test('tyre rejects bad vehicle class', () => {
+  const r = validateTyre({ vehicle_class: 'C4' })
+  assert.equal(r.valid, false)
+})
+
+test('tyre rejects 3-letter country of manufacture', () => {
+  const r = validateTyre({ country_of_manufacture: 'FRA' })
+  assert.equal(r.valid, false)
+})
+
+test('tyre rejects DOT week/year that is not 4 digits', () => {
+  const r = validateTyre({ manufacture_week_year: '25/26' })
   assert.equal(r.valid, false)
 })

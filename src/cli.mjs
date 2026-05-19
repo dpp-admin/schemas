@@ -2,7 +2,7 @@
 // dpp-validate <file.json>
 // dpp-validate-csv <file.csv>
 import { readFileSync } from 'node:fs'
-import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, gtinCheckDigit } from './index.mjs'
+import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, validateTyre, gtinCheckDigit } from './index.mjs'
 
 const args = process.argv.slice(2)
 if (args.length < 2 && args[0] !== '--help') {
@@ -13,6 +13,7 @@ if (args.length < 2 && args[0] !== '--help') {
     '  dpp-validate validate-recycled-audit <audit.json>',
     '  dpp-validate validate-due-diligence <due-diligence.json>',
     '  dpp-validate validate-textile <textile.json>',
+    '  dpp-validate validate-tyre <tyre.json>',
   ].join('\n'))
   process.exit(2)
 }
@@ -60,10 +61,11 @@ if (cmd === 'validate') {
   })
   console.log(`\n${okCount} valid, ${failCount} invalid out of ${rows.length} rows.`)
   process.exit(failCount === 0 ? 0 : 1)
-} else if (cmd === 'validate-recycled-audit' || cmd === 'validate-due-diligence' || cmd === 'validate-textile') {
+} else if (cmd === 'validate-recycled-audit' || cmd === 'validate-due-diligence' || cmd === 'validate-textile' || cmd === 'validate-tyre') {
   const fn = cmd === 'validate-recycled-audit' ? validateRecycledAudit
            : cmd === 'validate-due-diligence'  ? validateDueDiligence
-           : validateTextile
+           : cmd === 'validate-textile'        ? validateTextile
+           : validateTyre
   const payload = JSON.parse(readFileSync(file, 'utf8'))
   const r = fn(payload)
   if (r.valid) {

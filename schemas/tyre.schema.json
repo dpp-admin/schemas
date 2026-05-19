@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/tyre.schema.json",
+  "title": "DPP Tyre Data",
+  "description": "EU Tyre Labelling Regulation (EU) 2020/740 (mandatory since 1 May 2021; EV pictogram added by Commission Reg. 2024/250) + EU EPREL database + Reg. 552/2009 (PAH oil ban) + UNECE GRBP draft tyre-abrasion test method + anticipatory ESPR delegated act for tyres.",
+  "type": "object",
+  "properties": {
+    "vehicle_class":           { "type": ["string", "null"], "enum": [null, "C1", "C2", "C3"], "description": "C1 passenger / C2 light truck / C3 heavy truck." },
+    "fuel_efficiency_class":   { "type": ["string", "null"], "enum": [null, "A", "B", "C", "D", "E"], "description": "EU Tyre Label fuel-efficiency class (rolling resistance)." },
+    "wet_grip_class":          { "type": ["string", "null"], "enum": [null, "A", "B", "C", "D", "E"] },
+    "external_noise_db":       { "type": ["integer", "null"], "minimum": 50, "maximum": 90, "description": "dB(A) measured value." },
+    "external_noise_class":    { "type": ["string", "null"], "enum": [null, "A", "B", "C"] },
+    "snow_grip_3pmsf":         { "type": ["boolean", "null"], "description": "Three-Peak Mountain Snowflake pictogram." },
+    "ice_grip_nordic":         { "type": ["boolean", "null"], "description": "Nordic ice-grip pictogram per ISO 19447." },
+    "ev_optimised":            { "type": ["boolean", "null"], "description": "EV-optimised pictogram added 1 May 2024 (Commission Reg. 2024/250)." },
+    "eprel_database_id":       { "type": ["string", "null"], "maxLength": 40, "description": "EPREL registration ID, e.g. 'EPREL/2024/T0123456'." },
+
+    "size_designation":        { "type": ["string", "null"], "maxLength": 40, "description": "e.g. '205/55 R16 91V'." },
+    "load_index":              { "type": ["integer", "null"], "minimum": 0, "maximum": 279, "description": "ETRTO load index (0=45 kg, 279=136 t)." },
+    "speed_rating":            { "type": ["string", "null"], "maxLength": 4, "description": "e.g. 'V' (240 km/h), 'H' (210 km/h), 'W' (270 km/h)." },
+    "tread_depth_new_mm":      { "type": ["number", "null"], "minimum": 0 },
+    "legal_min_tread_mm":      { "type": ["number", "null"], "minimum": 0, "description": "EU C1 legal minimum is 1.6 mm." },
+    "tread_pattern":           { "type": ["string", "null"], "enum": [null, "symmetric", "asymmetric", "directional", "semi-slick", "off-road"] },
+    "season":                  { "type": ["string", "null"], "enum": [null, "summer", "winter", "all-season", "all-weather"] },
+
+    "rubber_blend_composition": {
+      "type": ["array", "null"],
+      "description": "Order from highest to lowest %. Sum should equal 100. Typical passenger tyre: NR 40%, SBR 35%, BR 25%.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "polymer": { "type": "string", "maxLength": 80, "description": "e.g. 'Natural rubber (NR)', 'SBR', 'BR'." },
+          "pct":     { "type": ["number", "null"], "minimum": 0, "maximum": 100 }
+        },
+        "required": ["polymer"],
+        "additionalProperties": false
+      }
+    },
+    "carbon_black_content_pct":  { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "silica_content_pct":        { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "steel_belt_pct":            { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "textile_cord_pct":          { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "bead_wire_type":            { "type": ["string", "null"], "maxLength": 40 },
+    "recycled_rubber_pct":       { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "bio_based_content_pct":     { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "high_aromatic_oils_free":   { "type": ["boolean", "null"], "description": "EU mandatory since 1 Jan 2010 per Reg. 552/2009." },
+
+    "tread_wear_index_utqg":     { "type": ["integer", "null"], "minimum": 0, "description": "US UTQG treadwear index (100–700+). Industry de-facto in the EU." },
+    "abrasion_mg_per_km":        { "type": ["number", "null"], "minimum": 0, "description": "Tread-mass loss per km. Per UNECE GRBP draft. Tyres are the second-largest source of microplastics in the EU." },
+    "abrasion_test_method":      { "type": ["string", "null"], "maxLength": 80 },
+    "abrasion_class_anticipated": { "type": ["string", "null"], "enum": [null, "A", "B", "C", "D", "E"], "description": "Anticipated A-E label class from 2027." },
+
+    "country_of_manufacture":    { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+    "factory_id":                { "type": ["string", "null"], "maxLength": 40, "description": "DOT plant code, e.g. 'B9' for Michelin Cuneo." },
+    "dot_code":                  { "type": ["string", "null"], "maxLength": 20, "description": "Full DOT marking, e.g. 'DOT B9 H1 ABCD 2526'." },
+    "manufacture_week_year":     { "type": ["string", "null"], "pattern": "^[0-9]{4}$", "description": "Last 4 chars of DOT, e.g. '2526' = week 25 / year 2026." },
+
+    "retreadable":               { "type": ["boolean", "null"] },
+    "retread_pathway_url":       { "type": ["string", "null"], "format": "uri" },
+    "recycling_pathway":         { "type": ["string", "null"], "enum": [null, "mechanical", "devulcanisation", "pyrolysis", "energy_recovery", "retread_first", "not_recyclable"] },
+    "recycling_collection_partner": { "type": ["string", "null"], "maxLength": 120 },
+
+    "run_flat":                  { "type": ["boolean", "null"] },
+    "self_sealing":              { "type": ["boolean", "null"] },
+    "studdable":                 { "type": ["boolean", "null"] },
+    "homologation_codes":        { "type": ["string", "null"] },
+
+    "notes":                     { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

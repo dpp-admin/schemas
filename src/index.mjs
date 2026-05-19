@@ -21,6 +21,7 @@ const schemas = {
   'battery-recycled-audit': loadSchema('battery-recycled-audit.schema.json'),
   'battery-due-diligence':  loadSchema('battery-due-diligence.schema.json'),
   textile:                  loadSchema('textile.schema.json'),
+  tyre:                     loadSchema('tyre.schema.json'),
 }
 
 const ajv = new Ajv({ allErrors: true, strict: false, $data: true })
@@ -45,6 +46,7 @@ export const validateBattery        = makeValidator('https://dpp.gs/schemas/v202
 export const validateRecycledAudit  = makeValidator('https://dpp.gs/schemas/v2026.05/battery-recycled-audit.schema.json')
 export const validateDueDiligence   = makeValidator('https://dpp.gs/schemas/v2026.05/battery-due-diligence.schema.json')
 export const validateTextile        = makeValidator('https://dpp.gs/schemas/v2026.05/textile.schema.json')
+export const validateTyre           = makeValidator('https://dpp.gs/schemas/v2026.05/tyre.schema.json')
 
 // GS1 check-digit validation for GTIN-8/12/13/14. Returned alongside
 // schema validation as a warning when GTIN is otherwise structurally valid
