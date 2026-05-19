@@ -46,6 +46,7 @@ npx @dpp-gs/schemas validate my-product.json
 npx @dpp-gs/schemas validate-csv my-batch.csv
 npx @dpp-gs/schemas validate-recycled-audit my-audit.json
 npx @dpp-gs/schemas validate-due-diligence my-dd.json
+npx @dpp-gs/schemas validate-textile my-textile.json
 ```
 
 `validate-csv` accepts the standard dpp.gs CSV template (columns documented in `schemas/product.schema.json`) and prints per-row diagnostics.
@@ -61,6 +62,7 @@ npx @dpp-gs/schemas validate-due-diligence my-dd.json
 | `battery-disassembly.schema.json` | Battery Reg. Annex XIII §2 |
 | `battery-recycled-audit.schema.json` | Battery Reg. Art. 8 + Annex XIII §3 |
 | `battery-due-diligence.schema.json` | Battery Reg. Chapter VII (Art. 47–53) |
+| `textile.schema.json` | Textile Labelling Reg. 1007/2011 + EU Strategy for Sustainable Textiles + PEFCR Apparel & Footwear v1.1 + anticipatory ESPR delegated act |
 | `carbon-footprint.schema.json` | Battery Reg. Art. 7 + ESPR Art. 7(2)(b) |
 
 Each schema cites the exact regulation paragraph for every mandatory field. Look at `notes` annotations.

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/textile.schema.json",
+  "title": "DPP Textile Data",
+  "description": "Textile Labelling Regulation (EU) 1007/2011 (mandatory fibre composition) + EU Strategy for Sustainable and Circular Textiles (2022/COM 141) + PEFCR Apparel and Footwear v1.1 + anticipatory ESPR 2024/1781 delegated act for textiles.",
+  "type": "object",
+  "properties": {
+    "fibre_composition": {
+      "type": ["array", "null"],
+      "description": "Order from highest to lowest %. Sum should equal 100. Mandatory under Reg. 1007/2011.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name":            { "type": "string", "maxLength": 80, "description": "e.g. 'Merino wool', 'Recycled polyester', 'Tencel Lyocell'." },
+          "pct":             { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+          "recycled_pct":    { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "% of this fibre that is recycled content." },
+          "origin_country":  { "type": ["string", "null"], "pattern": "^[A-Z]{2}$", "description": "ISO 3166-1 alpha-2." },
+          "is_organic":      { "type": ["boolean", "null"] }
+        },
+        "required": ["name"],
+        "additionalProperties": false
+      }
+    },
+    "fabric_weight_gsm":         { "type": ["number", "null"], "minimum": 0, "description": "g/m²." },
+    "weave_type":                { "type": ["string", "null"], "enum": [null, "woven", "knitted", "non-woven", "felt", "mesh", "fleece", "quilted", "laminated"] },
+    "yarn_count":                { "type": ["string", "null"], "maxLength": 40, "description": "e.g. 'Nm 60/2', 'Ne 30/1', '150 dtex'." },
+
+    "country_of_fibre_origin":     { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+    "country_of_dyeing":           { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+    "country_of_weaving":          { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+    "country_of_cutting_sewing":   { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+    "country_of_finishing":        { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+    "factory_id_dyeing":           { "type": ["string", "null"], "maxLength": 60, "description": "Higg FEM ID, Open Apparel Registry ID, etc." },
+    "factory_id_cutting_sewing":   { "type": ["string", "null"], "maxLength": 60 },
+
+    "carbon_footprint_per_garment_kg": { "type": ["number", "null"], "minimum": 0, "description": "kg CO₂-eq per garment, full life cycle, per PEFCR Apparel & Footwear v1.1." },
+    "water_footprint_per_garment_l":   { "type": ["number", "null"], "minimum": 0, "description": "Liters of blue water per garment." },
+    "land_use_m2yr_per_garment":       { "type": ["number", "null"], "minimum": 0, "description": "m²·year per garment (natural fibres)." },
+    "pef_methodology_version":         { "type": ["string", "null"], "maxLength": 40 },
+    "pef_declaration_url":             { "type": ["string", "null"], "format": "uri" },
+
+    "dye_class":             { "type": ["string", "null"], "enum": [null, "reactive", "disperse", "direct", "vat", "sulfur", "acid", "pigment", "natural", "none"] },
+    "oeko_tex_class":        { "type": ["string", "null"], "maxLength": 20 },
+    "reach_svhc_compliant":  { "type": ["boolean", "null"] },
+    "zdhc_mrsl_compliant":   { "type": ["boolean", "null"], "description": "Zero Discharge of Hazardous Chemicals — MRSL v3.1 conformity." },
+    "pfas_free":             { "type": ["boolean", "null"] },
+    "formaldehyde_free":     { "type": ["boolean", "null"] },
+
+    "martindale_abrasion_cycles":  { "type": ["integer", "null"], "minimum": 0, "description": "ISO 12947-2." },
+    "pilling_resistance_grade":    { "type": ["number", "null"], "minimum": 1, "maximum": 5, "description": "ISO 12945-2, 1.0–5.0." },
+    "color_fastness_wash_grade":   { "type": ["number", "null"], "minimum": 1, "maximum": 5, "description": "ISO 105-C06, 1.0–5.0." },
+    "color_fastness_light_grade":  { "type": ["number", "null"], "minimum": 1, "maximum": 8, "description": "ISO 105-B02, 1.0–8.0." },
+    "wash_cycles_durability":      { "type": ["integer", "null"], "minimum": 0, "description": "Expected wash cycles before noticeable change (ISO 6330)." },
+    "tear_strength_warp_n":        { "type": ["number", "null"], "minimum": 0, "description": "Newtons (ISO 13937)." },
+    "tear_strength_weft_n":        { "type": ["number", "null"], "minimum": 0 },
+
+    "microfibre_shed_mg_per_kg":   { "type": ["number", "null"], "minimum": 0, "description": "Microfibre release per wash, in mg per kg of textile. Tested per TMC protocol or AATCC TM212." },
+    "microfibre_shed_test_method": { "type": ["string", "null"], "maxLength": 80 },
+
+    "recycled_content_pct_total": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "mono_material":              { "type": ["boolean", "null"], "description": "TRUE if a single fibre type ≥95% w/w. Mono-materials can be chemically recycled to monomer." },
+    "recyclability_pct":          { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Per EN 45555." },
+    "recycling_pathway":          { "type": ["string", "null"], "enum": [null, "mechanical", "chemical", "thermal", "energy", "reuse_first", "not_recyclable"] },
+    "repair_kit_available":       { "type": ["boolean", "null"] },
+    "repair_instructions_url":    { "type": ["string", "null"], "format": "uri" },
+    "reuse_pathway_url":          { "type": ["string", "null"], "format": "uri", "description": "Brand resale, take-back or second-hand partner URL." },
+
+    "care_instructions": {
+      "type": ["object", "null"],
+      "description": "Digital equivalent of ISO 3758 pictograms.",
+      "properties": {
+        "wash_max_c":    { "type": ["integer", "null"], "minimum": 0, "maximum": 95 },
+        "machine_wash":  { "type": ["boolean", "null"] },
+        "hand_wash":     { "type": ["boolean", "null"] },
+        "bleach":        { "type": ["string", "null"], "enum": [null, "any", "chlorine_only", "non_chlorine_only", "do_not_bleach"] },
+        "tumble_dry":    { "type": ["string", "null"], "enum": [null, "low", "medium", "high", "do_not"] },
+        "iron_max_c":    { "type": ["integer", "null"], "minimum": 0, "maximum": 220 },
+        "dry_clean":     { "type": ["string", "null"], "enum": [null, "any", "P", "F", "W", "do_not"] }
+      },
+      "additionalProperties": false
+    },
+    "care_instructions_text":  { "type": ["string", "null"] },
+
+    "gots_certified":              { "type": ["boolean", "null"], "description": "Global Organic Textile Standard." },
+    "fairtrade_certified":         { "type": ["boolean", "null"] },
+    "bluesign_certified":          { "type": ["boolean", "null"] },
+    "cradle_to_cradle_grade":      { "type": ["string", "null"], "enum": [null, "Basic", "Bronze", "Silver", "Gold", "Platinum"] },
+    "responsible_wool_standard":   { "type": ["boolean", "null"] },
+    "responsible_down_standard":   { "type": ["boolean", "null"] },
+    "leather_working_group_grade": { "type": ["string", "null"], "enum": [null, "Audited", "Bronze", "Silver", "Gold"] },
+    "eu_ecolabel_licence":         { "type": ["string", "null"], "maxLength": 40, "description": "e.g. 'FR/16/001'." },
+
+    "notes":                       { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

@@ -3,7 +3,7 @@ import assert from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { validateProduct, validateRecycledAudit, validateDueDiligence, gtinCheckDigit } from './index.mjs'
+import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, gtinCheckDigit } from './index.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const example = JSON.parse(readFileSync(join(__dirname, '..', 'examples', 'voltcore-vc-75e.json'), 'utf8'))
@@ -81,5 +81,36 @@ test('due-diligence rejects unknown risk-area enum', () => {
     issued_date: '2026-03-15',
     risk_areas_assessed: ['ufo_abduction'],
   })
+  assert.equal(r.valid, false)
+})
+
+test('textile accepts a minimum valid record', () => {
+  const r = validateTextile({
+    fibre_composition: [
+      { name: 'Merino wool', pct: 85, recycled_pct: 0, origin_country: 'AU', is_organic: true },
+      { name: 'Recycled polyester', pct: 15, recycled_pct: 100, origin_country: 'TW' },
+    ],
+    fabric_weight_gsm: 280,
+    weave_type: 'knitted',
+  })
+  assert.equal(r.valid, true, JSON.stringify(r.errors, null, 2))
+})
+
+test('textile rejects non-ISO-alpha2 fibre origin', () => {
+  const r = validateTextile({
+    fibre_composition: [{ name: 'Wool', origin_country: 'Australia' }],
+  })
+  assert.equal(r.valid, false)
+})
+
+test('textile rejects share % over 100', () => {
+  const r = validateTextile({
+    fibre_composition: [{ name: 'Wool', pct: 120 }],
+  })
+  assert.equal(r.valid, false)
+})
+
+test('textile rejects unknown weave type', () => {
+  const r = validateTextile({ weave_type: 'glued-together' })
   assert.equal(r.valid, false)
 })
