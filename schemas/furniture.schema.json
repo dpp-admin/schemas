@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/furniture.schema.json",
+  "title": "DPP Furniture Data",
+  "description": "Furniture sector data per EU Regulation 2024/1781 (ESPR Tier-1 priority, delegated act 2027–2028) + EU Deforestation Regulation (EU) 2023/1115 (EUDR — wood traceability since 30 Dec 2024) + EN 16516 / E1 / CARB Phase 2 formaldehyde + Decopaint Directive 2004/42 VOC + FR Loi AGEC Repairability Index + EN 1728 / EN 16139 / EN 12521 durability tests.",
+  "type": "object",
+  "properties": {
+    "furniture_category": { "type": ["string", "null"], "enum": [null, "seating", "table", "cabinet", "bed", "sofa", "shelving", "outdoor", "office", "lighting", "accessory"] },
+    "intended_use":       { "type": ["string", "null"], "enum": [null, "residential", "contract", "outdoor", "kitchen", "bathroom", "healthcare", "educational"] },
+    "assembly_required":  { "type": ["boolean", "null"] },
+    "assembly_time_minutes": { "type": ["integer", "null"], "minimum": 0 },
+    "tools_required":     { "type": ["string", "null"] },
+    "flat_pack":          { "type": ["boolean", "null"] },
+    "modular_design":     { "type": ["boolean", "null"] },
+
+    "wood_composition": {
+      "type": ["array", "null"],
+      "description": "Sum of pct should be 100 for wood-based items. EUDR Reg. 2023/1115 requires country_of_origin for solid wood + wood-based panels.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "species":          { "type": "string", "maxLength": 120, "description": "e.g. 'Oak (Quercus robur)'." },
+          "pct":              { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+          "country_of_origin":{ "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+          "fsc_certified":    { "type": ["boolean", "null"] },
+          "pefc_certified":   { "type": ["boolean", "null"] },
+          "fsc_id":           { "type": ["string", "null"], "maxLength": 40 }
+        },
+        "required": ["species"],
+        "additionalProperties": false
+      }
+    },
+    "panel_type":          { "type": ["string", "null"], "enum": [null, "particleboard", "MDF", "HDF", "OSB", "plywood", "solid", "laminate", "veneer", "none"] },
+    "panel_thickness_mm":  { "type": ["number", "null"], "minimum": 0 },
+    "eudr_due_diligence_url":   { "type": ["string", "null"], "format": "uri", "description": "EUDR Reg. 2023/1115 due-diligence statement URL." },
+    "fsc_chain_of_custody_id":  { "type": ["string", "null"], "maxLength": 40 },
+    "pefc_chain_of_custody_id": { "type": ["string", "null"], "maxLength": 40 },
+
+    "formaldehyde_class":          { "type": ["string", "null"], "enum": [null, "E0", "E0.5", "E1", "E2", "NAF", "F-four-star", "CARB-P2"] },
+    "formaldehyde_emission_mg_m3": { "type": ["number", "null"], "minimum": 0, "description": "EN 16516 chamber test, 28-day equilibrium. E1 = ≤0.124 mg/m³." },
+    "voc_emission_class":          { "type": ["string", "null"], "enum": [null, "A+", "A", "B", "C"], "description": "FR Décret 2011-321 VOC label, A+ (lowest) to C." },
+    "total_voc_mg_m3":             { "type": ["number", "null"], "minimum": 0 },
+    "flame_retardants_free":       { "type": ["boolean", "null"] },
+    "pfas_free":                   { "type": ["boolean", "null"] },
+    "phthalates_free":             { "type": ["boolean", "null"] },
+
+    "upholstery_composition": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": {
+          "layer":    { "type": "string", "maxLength": 80 },
+          "material": { "type": ["string", "null"], "maxLength": 300 },
+          "pct":      { "type": ["number", "null"], "minimum": 0, "maximum": 100 }
+        },
+        "required": ["layer"],
+        "additionalProperties": false
+      }
+    },
+    "upholstery_fire_class": { "type": ["string", "null"], "maxLength": 60, "description": "EN 1021, BS 5852, CA TB 117." },
+    "leather_lwg_grade":     { "type": ["string", "null"], "enum": [null, "Audited", "Bronze", "Silver", "Gold"] },
+    "leather_origin_country":{ "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+
+    "durability_test_method":    { "type": ["string", "null"], "description": "EN 1728 (seating), EN 16139 (contract), EN 12521 (table)." },
+    "durability_cycles_passed":  { "type": ["integer", "null"], "minimum": 0 },
+    "load_capacity_kg":          { "type": ["number", "null"], "minimum": 0 },
+    "scratch_resistance_grade":  { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+    "light_fastness_blue_wool":  { "type": ["integer", "null"], "minimum": 1, "maximum": 8 },
+    "warranty_years":            { "type": ["integer", "null"], "minimum": 0 },
+
+    "repair_kit_available":         { "type": ["boolean", "null"] },
+    "repair_instructions_url":      { "type": ["string", "null"], "format": "uri" },
+    "spare_parts_url":              { "type": ["string", "null"], "format": "uri" },
+    "spare_parts_availability_years": { "type": ["integer", "null"], "minimum": 0 },
+    "repairability_score":          { "type": ["number", "null"], "minimum": 1, "maximum": 10, "description": "FR Loi AGEC Repairability Index, 1.0–10.0." },
+    "modular_replaceable_parts":    { "type": ["string", "null"] },
+
+    "recycled_content_pct_total":   { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "recycled_wood_pct":            { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "recycled_metal_pct":           { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "recycled_plastic_pct":         { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "recyclability_pct":            { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Per EN 45555." },
+    "disassembly_time_minutes":     { "type": ["integer", "null"], "minimum": 0 },
+    "disassembly_tools":            { "type": ["string", "null"] },
+    "take_back_url":                { "type": ["string", "null"], "format": "uri" },
+    "donation_partner":             { "type": ["string", "null"], "maxLength": 120 },
+
+    "carbon_footprint_per_item_kg": { "type": ["number", "null"], "minimum": 0 },
+    "water_footprint_per_item_l":   { "type": ["number", "null"], "minimum": 0 },
+    "pef_methodology_version":      { "type": ["string", "null"], "maxLength": 40 },
+    "pef_declaration_url":          { "type": ["string", "null"], "format": "uri" },
+    "manufacturing_energy_source":  { "type": ["string", "null"] },
+
+    "eu_ecolabel_licence":          { "type": ["string", "null"], "maxLength": 40 },
+    "blauer_engel_id":              { "type": ["string", "null"], "maxLength": 40 },
+    "nordic_swan_id":               { "type": ["string", "null"], "maxLength": 40 },
+    "greenguard_gold":              { "type": ["boolean", "null"] },
+    "cradle_to_cradle_grade":       { "type": ["string", "null"], "enum": [null, "Basic", "Bronze", "Silver", "Gold", "Platinum"] },
+    "iso_14001":                    { "type": ["boolean", "null"] },
+    "bsci_compliant":               { "type": ["boolean", "null"] },
+    "notes":                        { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

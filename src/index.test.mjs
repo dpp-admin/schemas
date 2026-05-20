@@ -3,7 +3,7 @@ import assert from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, validateTyre, gtinCheckDigit } from './index.mjs'
+import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, validateTyre, validateFurniture, gtinCheckDigit } from './index.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const example = JSON.parse(readFileSync(join(__dirname, '..', 'examples', 'voltcore-vc-75e.json'), 'utf8'))
@@ -152,5 +152,46 @@ test('tyre rejects 3-letter country of manufacture', () => {
 
 test('tyre rejects DOT week/year that is not 4 digits', () => {
   const r = validateTyre({ manufacture_week_year: '25/26' })
+  assert.equal(r.valid, false)
+})
+
+test('furniture accepts a minimum valid record (Vitra-style chair)', () => {
+  const r = validateFurniture({
+    furniture_category: 'seating',
+    intended_use: 'contract',
+    flat_pack: false,
+    modular_design: true,
+    wood_composition: [
+      { species: 'European beech (Fagus sylvatica)', pct: 100, country_of_origin: 'DE', fsc_certified: true, fsc_id: 'FSC-C012345' },
+    ],
+    panel_type: 'solid',
+    formaldehyde_class: 'E0.5',
+    voc_emission_class: 'A+',
+    repairability_score: 8.5,
+    warranty_years: 10,
+    eu_ecolabel_licence: 'DE/050/001',
+  })
+  assert.equal(r.valid, true, JSON.stringify(r.errors, null, 2))
+})
+
+test('furniture rejects unknown furniture_category', () => {
+  const r = validateFurniture({ furniture_category: 'spaceship' })
+  assert.equal(r.valid, false)
+})
+
+test('furniture rejects formaldehyde_class out of enum', () => {
+  const r = validateFurniture({ formaldehyde_class: 'E3' })
+  assert.equal(r.valid, false)
+})
+
+test('furniture rejects repairability_score > 10', () => {
+  const r = validateFurniture({ repairability_score: 11 })
+  assert.equal(r.valid, false)
+})
+
+test('furniture rejects 3-letter wood origin country', () => {
+  const r = validateFurniture({
+    wood_composition: [{ species: 'Oak', country_of_origin: 'DEU' }],
+  })
   assert.equal(r.valid, false)
 })
