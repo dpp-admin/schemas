@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dpp.gs/schemas/v2026.05/packaging.schema.json",
+  "title": "DPP Packaging Data",
+  "description": "Packaging sector data per PPWR — Packaging and Packaging Waste Regulation (EU) 2025/40 (applies from 12 Aug 2026). NOTE: PPWR does not itself mandate a Digital Product Passport — it requires identification ON the packaging (Art 15/18) + an EU Declaration of Conformity (Art 38/39 + Annex VII). A GS1 Digital Link DPP is the carrier for those obligations. Covers Art 5 PFAS + heavy-metal limits, Art 6-11 recyclability/recycled content/minimisation, Art 12 labelling (from 2028), Art 26 reuse, Art 44/45 EPR registration.",
+  "type": "object",
+  "properties": {
+    "packaging_category": { "type": ["string", "null"], "enum": [null, "plastic-rigid", "plastic-flexible", "paper-board", "glass", "metal-aluminium", "metal-steel", "composite", "wood", "textile", "ceramic", "biopolymer", "other"] },
+    "packaging_format":   { "type": ["string", "null"], "maxLength": 60, "description": "bottle / box / pouch / can / tray / film / wrap / cap / jar / cup / label" },
+    "packaging_level":    { "type": ["string", "null"], "enum": [null, "primary", "secondary", "tertiary", "service", "transport", "grouped"], "description": "PPWR packaging level." },
+    "intended_use":       { "type": ["string", "null"], "maxLength": 200 },
+    "single_use":         { "type": ["boolean", "null"] },
+    "reusable":           { "type": ["boolean", "null"] },
+
+    "producer_name":        { "type": ["string", "null"], "maxLength": 200, "description": "PPWR Art 15(a)." },
+    "producer_trademark":   { "type": ["string", "null"], "maxLength": 200, "description": "PPWR Art 15(b) registered trade name/trademark." },
+    "producer_address":     { "type": ["string", "null"], "description": "PPWR Art 15(c) postal address." },
+    "importer_name":        { "type": ["string", "null"], "maxLength": 200, "description": "PPWR Art 18(a)." },
+    "importer_trademark":   { "type": ["string", "null"], "maxLength": 200 },
+    "importer_address":     { "type": ["string", "null"], "description": "PPWR Art 18(b) postal address." },
+    "packaging_identifier": { "type": ["string", "null"], "maxLength": 120, "description": "PPWR Art 15(d) type/batch/serial or other element identifying the packaging. A GS1 Digital Link satisfies this." },
+
+    "material_composition": {
+      "type": ["array", "null"],
+      "description": "Basis for Art 12 labelling (from 2028) + Art 10 minimisation. Sum of weight_g should equal total_weight_g.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "material":     { "type": "string", "maxLength": 120, "description": "e.g. 'rPET', 'Corrugated cardboard', 'HDPE cap'." },
+          "weight_g":     { "type": ["number", "null"], "minimum": 0 },
+          "recycled_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+          "recyclable":   { "type": ["boolean", "null"] },
+          "color":        { "type": ["string", "null"], "maxLength": 40 },
+          "layer":        { "type": ["string", "null"], "maxLength": 60 }
+        },
+        "required": ["material"],
+        "additionalProperties": false
+      }
+    },
+    "total_weight_g":   { "type": ["number", "null"], "minimum": 0 },
+    "empty_weight_g":   { "type": ["number", "null"], "minimum": 0 },
+    "packaging_ratio":  { "type": ["number", "null"], "minimum": 0, "description": "Packaging mass / product mass (Art 10 minimisation)." },
+    "mono_material":    { "type": ["boolean", "null"] },
+
+    "food_contact":           { "type": ["boolean", "null"] },
+    "pfas_individual_ppb":    { "type": ["number", "null"], "minimum": 0, "description": "PPWR Art 5: individual non-polymeric PFAS limited to 25 ppb in food-contact packaging." },
+    "pfas_sum_ppb":           { "type": ["number", "null"], "minimum": 0, "description": "Sum of non-polymeric PFAS limited to 250 ppb." },
+    "total_fluorine_ppm":     { "type": ["number", "null"], "minimum": 0, "description": "Total fluorine limited to 50 ppm (polymeric + non-polymeric)." },
+    "pfas_free":              { "type": ["boolean", "null"] },
+    "heavy_metals_sum_mg_kg": { "type": ["number", "null"], "minimum": 0, "description": "PPWR Art 5: Pb+Cd+Hg+Cr(VI) sum must not exceed 100 mg/kg." },
+    "bisphenol_free":         { "type": ["boolean", "null"] },
+    "svhc_present":           { "type": ["boolean", "null"], "description": "REACH SVHC > 0.1% w/w." },
+    "svhc_details":           { "type": ["string", "null"] },
+
+    "recyclability_class":       { "type": ["string", "null"], "enum": [null, "A", "B", "C", "D", "E"], "description": "PPWR design-for-recycling grade (from 2028)." },
+    "recyclability_pct":         { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "recycled_content_pct":      { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Post-consumer recycled content (Art 7)." },
+    "recycled_content_verified": { "type": ["boolean", "null"] },
+    "recycling_stream":          { "type": ["string", "null"], "maxLength": 40, "description": "PET / HDPE / PP / paper / glass / aluminium / steel / mixed." },
+    "separable_components":      { "type": ["boolean", "null"] },
+    "compostable":               { "type": ["boolean", "null"] },
+    "compostability_standard":   { "type": ["string", "null"], "maxLength": 40, "description": "EN 13432 / TÜV OK Compost INDUSTRIAL|HOME." },
+
+    "reuse_system_url":      { "type": ["string", "null"], "format": "uri" },
+    "reuse_cycles_designed": { "type": ["integer", "null"], "minimum": 0 },
+    "deposit_scheme":        { "type": ["string", "null"], "maxLength": 60 },
+    "deposit_amount_eur":    { "type": ["number", "null"], "minimum": 0 },
+    "return_points_url":     { "type": ["string", "null"], "format": "uri" },
+
+    "epr_registrations": {
+      "type": ["array", "null"],
+      "description": "PPWR Art 44/45 — registration in every member state where the packaging is first placed on the market.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "country":             { "type": "string", "pattern": "^[A-Z]{2}$" },
+          "scheme":              { "type": ["string", "null"], "maxLength": 120 },
+          "registration_number": { "type": ["string", "null"], "maxLength": 80 }
+        },
+        "required": ["country"],
+        "additionalProperties": false
+      }
+    },
+
+    "declaration_of_conformity_url": { "type": ["string", "null"], "format": "uri", "description": "PPWR Art 38/39 + Annex VII." },
+    "conformity_assessment_date":    { "type": ["string", "null"], "format": "date" },
+    "test_reports_url":              { "type": ["string", "null"], "format": "uri" },
+    "retention_years":               { "type": ["integer", "null"], "minimum": 0, "description": "5 single-use / 10 reusable per Annex VII." },
+
+    "carbon_footprint_g_co2e": { "type": ["number", "null"], "minimum": 0, "description": "Per packaging unit." },
+    "pef_declaration_url":     { "type": ["string", "null"], "format": "uri" },
+    "certifications":          { "type": ["string", "null"], "description": "FSC / PEFC / Blue Angel / OK Compost / Cradle-to-Cradle." },
+    "notes":                   { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

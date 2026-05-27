@@ -3,7 +3,7 @@ import assert from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, validateTyre, validateFurniture, gtinCheckDigit } from './index.mjs'
+import { validateProduct, validateRecycledAudit, validateDueDiligence, validateTextile, validateTyre, validateFurniture, validatePackaging, gtinCheckDigit } from './index.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const example = JSON.parse(readFileSync(join(__dirname, '..', 'examples', 'voltcore-vc-75e.json'), 'utf8'))
@@ -192,6 +192,50 @@ test('furniture rejects repairability_score > 10', () => {
 test('furniture rejects 3-letter wood origin country', () => {
   const r = validateFurniture({
     wood_composition: [{ species: 'Oak', country_of_origin: 'DEU' }],
+  })
+  assert.equal(r.valid, false)
+})
+
+test('packaging accepts a minimum valid record (rPET bottle)', () => {
+  const r = validatePackaging({
+    packaging_category: 'plastic-rigid',
+    packaging_format: 'bottle',
+    packaging_level: 'primary',
+    reusable: true,
+    food_contact: true,
+    material_composition: [
+      { material: 'rPET', weight_g: 22.5, recycled_pct: 100, recyclable: true },
+      { material: 'HDPE cap', weight_g: 2.1, recycled_pct: 0, recyclable: true },
+    ],
+    pfas_free: true,
+    heavy_metals_sum_mg_kg: 8,
+    recyclability_class: 'A',
+    recycled_content_pct: 100,
+    epr_registrations: [{ country: 'SK', scheme: 'NATUR-PACK', registration_number: 'SK-NP-2026-0142' }],
+  })
+  assert.equal(r.valid, true, JSON.stringify(r.errors, null, 2))
+})
+
+test('packaging rejects unknown packaging_category', () => {
+  const r = validatePackaging({ packaging_category: 'antimatter' })
+  assert.equal(r.valid, false)
+})
+
+test('packaging rejects recyclability_class out of enum', () => {
+  const r = validatePackaging({ recyclability_class: 'Z' })
+  assert.equal(r.valid, false)
+})
+
+test('packaging rejects 3-letter EPR country code', () => {
+  const r = validatePackaging({
+    epr_registrations: [{ country: 'SVK', scheme: 'NATUR-PACK' }],
+  })
+  assert.equal(r.valid, false)
+})
+
+test('packaging rejects recycled_content_pct over 100', () => {
+  const r = validatePackaging({
+    material_composition: [{ material: 'PET', recycled_pct: 120 }],
   })
   assert.equal(r.valid, false)
 })
